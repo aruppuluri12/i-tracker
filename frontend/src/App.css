@@ -1,0 +1,26 @@
+@import '~antd/dist/antd.css';
+
+.App-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+}
+.tabs{
+  display: flex;
+  flex-direction: row;
+  color: black;
+  justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.buttons{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+
+

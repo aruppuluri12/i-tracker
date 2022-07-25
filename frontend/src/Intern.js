@@ -25,7 +25,7 @@ const Intern = () => {
     ...restProps
   }) => {
     const inputNode = dataIndex === 'notes' ? <TextArea /> : (dataIndex === 'status' ? <Select>
-      <Option value="New">Yet to Apply</Option>
+      <Option value="New">New</Option>
       <Option value="Applied">Applied</Option>
       <Option value="Interviewed">Interviewed</Option>
       <Option value="Accepted">Accepted</Option>
@@ -79,7 +79,7 @@ const Intern = () => {
       const row = await form.validateFields();
       const newData = [...internData];
       const index = newData.findIndex((item) => key === item.key);
-
+      console.log(newData[index]);
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
@@ -90,13 +90,20 @@ const Intern = () => {
         setInternData(newData);
         setEditingKey('');
       }
+      axios.put("http://localhost:3001/update", newData[index]).then((response) => {
+        console.log("success, updated");
+      })
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
   };
 
   useEffect(() => {
-    axios.get("http://localhost:3001/internships").then((response) => { setInternData(response.data) });
+    axios.get("http://localhost:3001/internships").then((response) => {
+      setInternData(response.data.map((val, index) => {
+        return { key: val.key, name: val.name, date: moment(val.date.toString().substring(0, 10), "YYYY-MM-DD"), status: val.status, notes: val.notes }
+      }))
+    });
   }, [])
 
   const onFinish = (values) => {
@@ -108,6 +115,7 @@ const Intern = () => {
       status: values.status,
       notes: values.notes,
     }
+    console.log(values.date)
     axios.post("http://localhost:3001/create", newData).then(() => {
       axios.get("http://localhost:3001/internships").then((response) => {
         setInternData(response.data.map((val, index) => {
@@ -309,7 +317,7 @@ const Intern = () => {
         { text: 'Notes', value: 'Notes' },
         { text: 'No notes', value: 'No notes' },
       ],
-      onFilter: (value, record) => { if (value === 'Notes') return record.notes !== undefined; return record.notes === undefined },
+      onFilter: (value, record) => { if (value === 'Notes') return record.notes !== null; return record.notes === null },
       render: (address => (
         <Tooltip placement="topLeft" title={address}>
           {address}
@@ -333,7 +341,7 @@ const Intern = () => {
       onCell: (record) => ({
         record,
         inputType: col.dataIndex === 'notes' ? <TextArea /> : (col.dataIndex === 'status' ? <Select>
-          <Option value="New">Yet to Apply</Option>
+          <Option value="New">New</Option>
           <Option value="Applied">Applied</Option>
           <Option value="Interviewed">Interviewed</Option>
           <Option value="Accepted">Accepted</Option>

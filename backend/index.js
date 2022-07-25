@@ -46,6 +46,19 @@ app.delete('/delete/:key', (req, res) => {
   });
 })
 
+app.put('/update', (req, res) => {
+  const key = req.body.key
+  const name = req.body.name;
+  const date = req.body.date;
+  const status = req.body.status;
+  const notes = req.body.notes;
+  db.query("UPDATE intern_data2 SET name = ?, date = ?, status = ?, notes = ? WHERE `key` = ?",
+    [name, date, status, notes, key], (err, result) => {
+      if (err) console.log(err);
+      else res.send(result);
+    })
+})
+
 app.listen(3001, () => {
   console.log("hi");
 })

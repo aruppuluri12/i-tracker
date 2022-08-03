@@ -21,6 +21,33 @@
   justify-content: center;
 }
 
+a {
+padding: 25px 50px;
+}
+
+a:link, a:visited, a:focus {
+  background: #FAFAFA;
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  color: black;
+  justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+  background: #FAFAFA;
+}
+
+a:hover {
+  background: rgb(177, 177, 177);
+  color: white;
+}
+
+
+
+
+
 
 
 

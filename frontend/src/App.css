@@ -45,7 +45,13 @@ a:hover {
 }
 
 
+.ant-input{
+  width: 50%;
+}
 
+.ant-input-affix-wrapper {
+  width: 50%;
+}
 
 
 

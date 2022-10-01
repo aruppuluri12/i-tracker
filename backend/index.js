@@ -44,6 +44,19 @@ app.post('/createNetwork', (req, res) => {
   );
 });
 
+app.post('/createUser', (req, res) => {
+  const user = req.body.username;
+  const pass = req.body.password;
+
+  db.query('INSERT INTO users (username, password) VALUES (?, ?)', [user, pass], (err, result) => {
+    if (err) console.log(err);
+    else {
+      res.send("Values Inserted");
+    }
+  }
+  );
+});
+
 
 app.get('/internships', (req, res) => {
   db.query("SELECT * FROM intern_data2", (err, result) => {
@@ -56,6 +69,16 @@ app.get('/network', (req, res) => {
   db.query("SELECT * FROM network_data", (err, result) => {
     if (err) console.log(err);
     else res.send(result);
+  })
+})
+
+app.get('/getUsers/:user', (req, res) => {
+  const user = req.params.user
+  db.query("SELECT * FROM users WHERE username = ?", user, (err, result) => {
+    if (err) console.log(err);
+    else {
+      res.send(result);
+    }
   })
 })
 
